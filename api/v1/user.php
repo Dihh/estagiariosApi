@@ -3,37 +3,71 @@
 class users{
     public function login(){
         
-        if(!isset($_PSOT['user'])){
-            throw new Exception("Usuário não foi encontrado",1);
+        $u = isset($_POST['user']) ? $_POST['user'] : '';
+        $p = isset($_POST['password']) ? $_POST['password'] : '';
+        
+        $con = new PDO('mysql: host=localhost; dbname=estagiarios','root','');
+        $sql =  "SELECT * FROM USERS WHERE USER = '$u' AND PASSWORD = '$p'";
+        $sql = $con->prepare($sql);
+        $sql->execute();
+        $num_rows = $sql->rowCount();
+        if($num_rows <= 0){
+            throw new Exception("Usuário ou senha inválida",1);
+        }
+        
+        $sql =  "SELECT * FROM SESSION WHERE USER = '$u'";
+        $sql = $con->prepare($sql);
+        $sql->execute();
+        $num_rows = $sql->rowCount();
+
+        $result = array();
+        if($num_rows > 0){
+            $result = getData($sql, $result);
+            
+        }else{
+            $sql =  "INSERT INTO session (TOKEN,USER) VALUES ( MD5(NOW()), '$u')";
+            $sql = $con->prepare($sql);
+            $sql->execute();
+
+            $sql =  "SELECT * FROM SESSION WHERE USER = '$u'";
+            $sql = $con->prepare($sql);
+            $sql->execute();
+            $result = getData($sql, $result);
         }
 
-        if(!isset($_PSOT['password'])){
-            throw new Exception("Senha incorreta",1);
+        return $result;
+    }
+
+    public function cadastro(){
+        $u = isset($_POST['user']) ? $_POST['user'] : false;
+        $p = isset($_POST['password']) ? $_POST['password'] : false;
+        $n = isset($_POST['name']) ? $_POST['name'] : false;
+
+        if(!$u || !$p || !$n){
+            throw new Exception("Dados inválidos",1);
         }
 
         $con = new PDO('mysql: host=localhost; dbname=estagiarios','root','');
-        $sql =  "SELECT * FROM USERS";
+        $sql =  "SELECT * FROM USERS WHERE USER = '$u'";
+        $sql = $con->prepare($sql);
+        $sql->execute();
+        $num_rows = $sql->rowCount();
+
+        if($num_rows > 0){
+            throw new Exception("Usuário já cadastrado",1);
+        }
+
+        $sql =  "INSERT INTO USERS (NOME,USER,PASSWORD) VALUES ('$n','$u','$p')";
+        $sql = $con->prepare($sql);
+        $sql->execute();
+
+        $sql =  "INSERT INTO session (TOKEN,USER) VALUES ( MD5(NOW()), '$u')";
         $sql = $con->prepare($sql);
         $sql->execute();
 
         $result = array();
-        while($row = $sql->fetch(PDO::FETCH_ASSOC)){
-            
-            foreach ($row as $key => &$value) {
-                if(is_a($value, 'DateTime')){
-                    $value = date_format($value, 'Y-m-d');
-                }
-            }
-            
-            $result[] = $row;
-            
-        }
-
-        if(!$result){
-            throw new Exception("Error processing request",1);
-        }
-        
         return $result;
+        
     }
 }
 

@@ -1,6 +1,6 @@
 <?php
 header("charset=utf-8");
-header("Content-Type: application/json");
+// header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: *");
 require_once 'user.php';
 
@@ -42,6 +42,20 @@ function unicodeDecode($value){
 	return $value;
 }
 
+function getData($sql, $arr){
+    while($row = $sql->fetch(PDO::FETCH_ASSOC)){
+            
+        foreach ($row as $key => &$value) {
+            if(is_a($value, 'DateTime')){
+                $value = date_format($value, 'Y-m-d');
+            }
+        }
+        
+        $arr[] = $row;
+        
+    }
+    return $arr;
+}
 
 
 if(isset($_REQUEST)){
