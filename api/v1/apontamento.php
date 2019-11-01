@@ -1,5 +1,5 @@
 <?php
-
+header("Access-Control-Allow-Origin: *");
 class apontamentos{
     public function setApontamento(){
         $c = isset($_POST['chegada']) ? $_POST['chegada'] : NULL;

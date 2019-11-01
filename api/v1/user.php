@@ -1,4 +1,5 @@
 <?php
+header("Access-Control-Allow-Origin: *");
 
 class users{
     public function login(){
@@ -18,8 +19,6 @@ class users{
         $result = array();
         $result = getData($sql, $result);
         $USER = $result[0]['ID'];
-
-        print_r($USER);
 
         $sql =  "SELECT * FROM SESSION WHERE USER = '$u'";
         $sql = $con->prepare($sql);
@@ -70,6 +69,32 @@ class users{
         $result = array();
         return $result;
         
+    }
+
+    public function getSession(){
+        $t = isset($_POST['token']) ? $_POST['token'] : '';
+        $con = new PDO('mysql: host=localhost; dbname=estagiarios','root','');
+        $sql =  "SELECT * FROM SESSION WHERE TOKEN = '$t'";
+        $sql = $con->prepare($sql);
+        $sql->execute();
+        $num_rows = $sql->rowCount();
+        if($num_rows > 0){
+
+            $result = array();
+            $result = getData($sql, $result);
+            $USER = $result[0]['USER'];
+            
+            $sql =  "SELECT NOME FROM USERS WHERE ID = '$USER'";
+            $sql = $con->prepare($sql);
+            $sql->execute();
+            $result = array();
+            $result = getData($sql, $result);
+            return $result;
+
+        }else{
+            throw new Exception("Erro de sessão",1);
+        }
+
     }
 }
 
