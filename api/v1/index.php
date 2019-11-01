@@ -1,6 +1,6 @@
 <?php
 header("charset=utf-8");
-// header("Content-Type: application/json");
+header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: *");
 require_once 'user.php';
 require_once 'apontamento.php';
