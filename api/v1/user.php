@@ -61,10 +61,6 @@ class users{
         $sql = $con->prepare($sql);
         $sql->execute();
 
-        $sql =  "INSERT INTO session (TOKEN,USER) VALUES ( MD5(NOW()), '$u')";
-        $sql = $con->prepare($sql);
-        $sql->execute();
-
         $result = array();
         return $result;
         
