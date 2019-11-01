@@ -1,6 +1,6 @@
 <?php
 header("charset=utf-8");
-header("Content-Type: application/json");
+// header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: *");
 require_once 'user.php';
 require_once 'apontamento.php';
@@ -17,12 +17,13 @@ class Rest{
 
         $parametros = array();
         $parametros = $url;
+        $con = new PDO('mysql: host=localhost; dbname=estagiarios','root','');
         
         try{
         if(class_exists($classe)){
             
             if(method_exists($classe, $metodo)){
-                $ret = call_user_func_array(array(new $classe, $metodo),$parametros);
+                $ret = call_user_func_array(array(new $classe, $metodo),array('param'=>$con));
                 return (array('status'=>'sucesso','dados'=>$ret));
             }else{
                 return (array('status'=>'error','dados'=>'Método Inexistente'));    

@@ -2,12 +2,12 @@
 header("Access-Control-Allow-Origin: *");
 
 class users{
-    public function login(){
+    public function login($con){
         
         $u = isset($_POST['user']) ? $_POST['user'] : '';
         $p = isset($_POST['password']) ? $_POST['password'] : '';
         
-        $con = new PDO('mysql: host=localhost; dbname=estagiarios','root','');
+        
         $sql =  "SELECT * FROM USERS WHERE USER = '$u' AND PASSWORD = '$p'";
         $sql = $con->prepare($sql);
         $sql->execute();
@@ -43,7 +43,7 @@ class users{
         return $result;
     }
 
-    public function cadastro(){
+    public function cadastro($con){
         $u = isset($_POST['user']) ? $_POST['user'] : false;
         $p = isset($_POST['password']) ? $_POST['password'] : false;
         $n = isset($_POST['name']) ? $_POST['name'] : false;
@@ -52,7 +52,6 @@ class users{
             throw new Exception("Dados inválidos",1);
         }
 
-        $con = new PDO('mysql: host=localhost; dbname=estagiarios','root','');
         $sql =  "SELECT * FROM USERS WHERE USER = '$u'";
         $sql = $con->prepare($sql);
         $sql->execute();
@@ -71,9 +70,8 @@ class users{
         
     }
 
-    public function getSession(){
+    public function getSession($con){
         $t = isset($_POST['token']) ? $_POST['token'] : '';
-        $con = new PDO('mysql: host=localhost; dbname=estagiarios','root','');
         $sql =  "SELECT * FROM SESSION WHERE TOKEN = '$t'";
         $sql = $con->prepare($sql);
         $sql->execute();

@@ -1,7 +1,7 @@
 <?php
 header("Access-Control-Allow-Origin: *");
 class apontamentos{
-    public function setApontamento(){
+    public function setApontamento($con){
         $c = isset($_POST['chegada']) ? $_POST['chegada'] : NULL;
         $a = isset($_POST['almoco']) ? $_POST['almoco'] : NULL;
         $s = isset($_POST['saida']) ? $_POST['saida'] : NULL;
@@ -12,7 +12,6 @@ class apontamentos{
             throw new Exception("Data inválida",1);
         }
 
-        $con = new PDO('mysql: host=localhost; dbname=estagiarios','root','');
         $sql =  "SELECT * FROM SESSION WHERE TOKEN = '$t'";
         $sql = $con->prepare($sql);
         $sql->execute();
@@ -50,13 +49,12 @@ class apontamentos{
         }
     }
 
-    public function getApontamento(){
+    public function getApontamento($con){
         $t = isset($_POST['token']) ? $_POST['token'] : '';
         $d = isset($_POST['data']) ? $_POST['data'] : false;
         if(!$d){
             throw new Exception("Data inválida",1);
         }
-        $con = new PDO('mysql: host=localhost; dbname=estagiarios','root','');
         $sql =  "SELECT * FROM SESSION WHERE TOKEN = '$t'";
         $sql = $con->prepare($sql);
         $sql->execute();
@@ -77,9 +75,8 @@ class apontamentos{
         }
     }
 
-    public function historicoApontamento(){
+    public function historicoApontamento($con){
         $t = isset($_POST['token']) ? $_POST['token'] : '';
-        $con = new PDO('mysql: host=localhost; dbname=estagiarios','root','');
         $sql =  "SELECT * FROM SESSION WHERE TOKEN = '$t'";
         $sql = $con->prepare($sql);
         $sql->execute();
