@@ -14,7 +14,13 @@ class users{
         if($num_rows <= 0){
             throw new Exception("Usuário ou senha inválida",1);
         }
-        
+
+        $result = array();
+        $result = getData($sql, $result);
+        $USER = $result[0]['ID'];
+
+        print_r($USER);
+
         $sql =  "SELECT * FROM SESSION WHERE USER = '$u'";
         $sql = $con->prepare($sql);
         $sql->execute();
@@ -25,11 +31,11 @@ class users{
             $result = getData($sql, $result);
             
         }else{
-            $sql =  "INSERT INTO session (TOKEN,USER) VALUES ( MD5(NOW()), '$u')";
+            $sql =  "INSERT INTO session (TOKEN,USER) VALUES ( MD5(NOW()), '$USER')";
             $sql = $con->prepare($sql);
             $sql->execute();
 
-            $sql =  "SELECT * FROM SESSION WHERE USER = '$u'";
+            $sql =  "SELECT * FROM SESSION WHERE USER = '$USER'";
             $sql = $con->prepare($sql);
             $sql->execute();
             $result = getData($sql, $result);
