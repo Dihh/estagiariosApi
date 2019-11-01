@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: 01-Nov-2019 às 17:16
+-- Generation Time: 01-Nov-2019 às 21:25
 -- Versão do servidor: 5.7.26
 -- versão do PHP: 7.2.18
 
@@ -37,7 +37,17 @@ CREATE TABLE IF NOT EXISTS `apontamentos` (
   `ALMOCO` time DEFAULT NULL,
   `SAIDA` time DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `apontamentos`
+--
+
+INSERT INTO `apontamentos` (`ID`, `USER`, `DATA`, `CHEGADA`, `ALMOCO`, `SAIDA`) VALUES
+(8, 10, '2019-11-02', '07:00:00', '15:00:00', '20:00:00'),
+(10, 16, '2019-11-02', '00:00:00', '00:00:00', '00:00:00'),
+(7, 10, '2019-11-01', '07:00:00', '12:00:00', '15:00:00'),
+(9, 16, '2019-11-01', '00:00:00', '00:00:00', '00:00:00');
 
 -- --------------------------------------------------------
 
@@ -52,6 +62,14 @@ CREATE TABLE IF NOT EXISTS `session` (
   PRIMARY KEY (`USER`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
+--
+-- Extraindo dados da tabela `session`
+--
+
+INSERT INTO `session` (`TOKEN`, `USER`) VALUES
+('902309b0de6321ec0bfb37c9607f7053', 10),
+('232874b6f6276f42b27d53e13380f895', 16);
+
 -- --------------------------------------------------------
 
 --
@@ -65,7 +83,15 @@ CREATE TABLE IF NOT EXISTS `users` (
   `USER` varchar(500) NOT NULL,
   `PASSWORD` varchar(500) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `users`
+--
+
+INSERT INTO `users` (`ID`, `NOME`, `USER`, `PASSWORD`) VALUES
+(10, 'Diegton Rodrigues Barbosa', 'diegton', 'e10adc3949ba59abbe56e057f20f883e'),
+(16, 'teste', 'teste', 'd41d8cd98f00b204e9800998ecf8427e');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
